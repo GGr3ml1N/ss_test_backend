@@ -13,9 +13,6 @@ const val DOMAIN = "domain"
 const val REALM = "realm"
 const val SECRET = "secret"
 
-fun ApplicationEnvironment.getPropertyFromConfigJWT(propertyName: String): String =
-    config.config("jwt").property(propertyName).getString()
-
 fun Application.configureAuth() {
     val jwtAudience: String = environment.getPropertyFromConfigJWT(AUDIENCE)
     val jwtDomain: String = environment.getPropertyFromConfigJWT(DOMAIN)
@@ -40,3 +37,6 @@ fun Application.configureAuth() {
         }
     }
 }
+
+fun ApplicationEnvironment.getPropertyFromConfigJWT(propertyName: String): String =
+    config.config("jwt").property(propertyName).getString()

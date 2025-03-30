@@ -25,7 +25,9 @@ private val routesModule: Module = module {
     single<AuthRoute> { AuthRoute(get()) }
 }
 
-
+/**
+ * Внедрение зависимостей
+ */
 fun Application.configureDependencies() {
     install(Koin) {
         slf4jLogger()

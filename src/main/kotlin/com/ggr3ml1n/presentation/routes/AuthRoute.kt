@@ -19,12 +19,20 @@ import kotlinx.datetime.toJavaInstant
 import kotlin.time.Duration.Companion.hours
 
 class AuthRoute(private val authRepository: AuthRepository) {
+    /**
+     * Функция, к-ая объединяет в себе все предыдущие
+     */
     fun authRoutes(route: Route): Unit = with(route) {
         postLoginUserRoute()
         postRegisterUserRoute()
         getAllUsersRoute()
     }
 
+    /**
+     * Роут, с помощью к-го можно добавить пользователя в список зарегистированных.
+     * Производит проверку на то, есть ли этот пользователь среди зарегистрированных. При успехе - добавляет в список, возвращает 200 с сообщением "User already exists"
+     * Выкидывает ошибку, если приходит некорректный body или происходит ошибка конвертации, возвращает 400
+     */
     private fun Route.postRegisterUserRoute() {
         post("/register") {
             try {
@@ -45,6 +53,11 @@ class AuthRoute(private val authRepository: AuthRepository) {
         }
     }
 
+    /**
+     * Роут, с помощью к-го можно добавить пользователя в список зарегистированных.
+     * Производит проверку на то, есть ли этот пользователь среди зарегистрированных. При успехе возвращает 200 и токен.
+     * Выкидывает ошибку, если приходит некорректный body или происходит ошибка конвертации, возвращает 400
+     */
     private fun Route.postLoginUserRoute() {
         val jwtAudience: String = environment.getPropertyFromConfigJWT(AUDIENCE)
         val jwtDomain: String = environment.getPropertyFromConfigJWT(DOMAIN)
@@ -72,6 +85,9 @@ class AuthRoute(private val authRepository: AuthRepository) {
         }
     }
 
+    /**
+     * Тестовый роут для проверки, что пользак добавляется в список зарегистрированных
+    */
     @Suppress("Test route")
     private fun Route.getAllUsersRoute() {
         get("/users") {
